@@ -14,15 +14,19 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                 echo 'Test Step: We run testing tool like pytest here'
-
+                
                 # TODO fill out the path to conda here
                 # sudo /PATH/TO/CONDA init
+                python3 -m venv myenv
+                source myenv/bin/activate
 
                 # TODO Complete the command to run pytest
                 # sudo /PATH/TO/CONDA run -n <Envinronment Name> <Command you want to run>
+                pip3 install pytest numpy pandas scikit-learn
+                pytest
 
-                echo 'pytest not runned'
-                exit 1 #comment this line after implementing Jenkinsfile
+                // echo 'pytest not runned'
+                // exit 1 #comment this line after implementing Jenkinsfile
                 '''
 
             }
@@ -32,6 +36,12 @@ pipeline {
                 echo 'In this step, we deploy our porject'
                 echo 'Depending on the context, we may publish the project artifact or upload pickle files'
             }
+        }
+    }
+    post{
+        always{
+            echo 'Clean up'
+            deleteDir()
         }
     }
 }
